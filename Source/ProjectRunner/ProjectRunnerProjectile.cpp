@@ -58,7 +58,5 @@ void AProjectRunnerProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* Other
 	else if(ATurretBase* Turret = Cast<ATurretBase>(OtherActor))
 	{
 		Turret->DestroyTurret();
-
-		Destroy();
 	}
 }
