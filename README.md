@@ -28,6 +28,6 @@
 ## 개발자
 - **박지훈**
   - 언리얼 엔진 5 기반 개인 프로젝트
-  - 개발 일지: https://fierce-fight-50c.notion.site/Guns-N-Runners-2591c901fd99809fb114ebeac79a1c72?source=copy_link
+  - 개발 일지: [Link](https://fierce-fight-50c.notion.site/Guns-N-Runners-2591c901fd99809fb114ebeac79a1c72?source=copy_link)
   - email: wlehfdl0817@naver.com
   - github: [https://github.com/Fiamm3tta](https://github.com/Fiamm3tta) 
