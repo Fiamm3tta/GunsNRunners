@@ -11,6 +11,7 @@ class USkeletalMeshComponent;
 class UCameraComponent;
 class UDataAsset_InputConfig;
 struct FInputActionValue;
+class AGNRWeaponBase;
 
 /**
  * 
@@ -21,6 +22,19 @@ class GNR_API AGNRPlayerCharacter : public AGNRCharacterBase
 	GENERATED_BODY()
 public:
 	AGNRPlayerCharacter();
+
+	void EquipWeapon(AGNRWeaponBase* NewWeapon);
+	
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void UnequipWeapon();
+
+	AGNRWeaponBase* GetCurrentWeapon() const { return CurrentWeapon; }
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
+	bool bHasWeapon = false;
+
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void SetHasWeapon(bool InputbHasWeapon) { bHasWeapon = InputbHasWeapon; }
 
 protected:
 	//~ Begin APawn Interface.
@@ -52,4 +66,7 @@ private:
 public:
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = "Weapon")
+	TObjectPtr<AGNRWeaponBase> CurrentWeapon;
 };

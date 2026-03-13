@@ -12,6 +12,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "DataAssets/StartUpData/DataAsset_PlayerStartUpData.h"
 #include "AbilitySystem/GNRAbilitySystemComponent.h"
+#include "Weapon/GNRWeaponBase.h"
 
 AGNRPlayerCharacter::AGNRPlayerCharacter()
 {
@@ -38,6 +39,39 @@ AGNRPlayerCharacter::AGNRPlayerCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+}
+
+void AGNRPlayerCharacter::EquipWeapon(AGNRWeaponBase* NewWeapon)
+{
+	if (!NewWeapon)
+	{
+		// UE_LOG(LogTemp, Warning, TEXT("Not NewWeapon"));
+		return;
+	}
+
+	if (CurrentWeapon)
+	{
+		// UE_LOG(LogTemp, Warning, TEXT("Weapon equip already"));
+		return;
+	}
+
+	CurrentWeapon = NewWeapon;
+	CurrentWeapon->OnEquipped(this);
+	SetHasWeapon(true);
+	// UE_LOG(LogTemp, Warning, TEXT("EquipWeapon called"));
+}
+
+void AGNRPlayerCharacter::UnequipWeapon()
+{
+	if (!CurrentWeapon)
+	{
+		bHasWeapon = false;
+		return;
+	}
+
+	CurrentWeapon->OnUnequipped();
+	CurrentWeapon = nullptr;
+	bHasWeapon = false;
 }
 
 void AGNRPlayerCharacter::PossessedBy(AController* NewController)
