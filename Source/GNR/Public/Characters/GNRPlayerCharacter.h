@@ -64,7 +64,9 @@ private:
 #pragma endregion
 
 public:
+	UFUNCTION(BlueprintCallable)
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
+	
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = "Weapon")

@@ -8,6 +8,7 @@
 
 class UGNRGameplayAbilityBase;
 class UGNRAbilitySystemComponent;
+class UGameplayEffect;
 
 /**
  * 
@@ -26,6 +27,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "StartUpData")
 	TArray< TSubclassOf < UGNRGameplayAbilityBase > > ReactiveAbilities;
+
+	UPROPERTY(EditDefaultsOnly, Category = "StartUpData")
+	TArray< TSubclassOf < UGameplayEffect > > StartUpGameplayEffects;
 
 	void GrantAbilities(const TArray< TSubclassOf < UGNRGameplayAbilityBase > >& InAbilitiesToGive, UGNRAbilitySystemComponent* InASCToGive, int32 ApplyLevel = 1);
 };

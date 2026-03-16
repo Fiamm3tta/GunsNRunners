@@ -21,6 +21,11 @@ UAbilitySystemComponent* AGNRCharacterBase::GetAbilitySystemComponent() const
 	return GetGNRAbilitySystemComponent();
 }
 
+UPawnCombatComponent* AGNRCharacterBase::GetPawnCombatComponent() const
+{
+	return nullptr;
+}
+
 void AGNRCharacterBase::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
