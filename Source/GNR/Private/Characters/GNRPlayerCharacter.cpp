@@ -13,6 +13,7 @@
 #include "DataAssets/StartUpData/DataAsset_PlayerStartUpData.h"
 #include "AbilitySystem/GNRAbilitySystemComponent.h"
 #include "Weapon/GNRWeaponBase.h"
+#include "AbilitySystem/GNRAttributeSet.h"
 
 AGNRPlayerCharacter::AGNRPlayerCharacter()
 {
@@ -72,6 +73,41 @@ void AGNRPlayerCharacter::UnequipWeapon()
 	CurrentWeapon->OnUnequipped();
 	CurrentWeapon = nullptr;
 	bHasWeapon = false;
+}
+
+void AGNRPlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (!GNRAbilitySystemComponent || !GNRAttributeSet)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ASC or AttributeSet is null on % s"), *GetNameSafe(this));
+		return;
+	}
+
+	GNRAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+		UGNRAttributeSet::GetCurrentSpeedAttribute()
+	).AddUObject(this, &AGNRPlayerCharacter::OnCurrentSpeedChanged);
+
+	ApplyCurrentSpeedToMovement(GNRAttributeSet->GetCurrentSpeed());
+
+}
+
+void AGNRPlayerCharacter::OnCurrentSpeedChanged(const FOnAttributeChangeData& Data)
+{
+	ApplyCurrentSpeedToMovement(Data.NewValue);
+
+	UE_LOG(LogTemp, Log, TEXT("CurrentSpeed changed: Old=%f New=%f"), Data.OldValue, Data.NewValue);
+}
+
+void AGNRPlayerCharacter::ApplyCurrentSpeedToMovement(float NewSpeed)
+{
+	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+	{
+		MoveComp->MaxWalkSpeed = NewSpeed;
+
+		UE_LOG(LogTemp, Log, TEXT("Applied MaxWalkSpeed: %f"), NewSpeed);
+	}
 }
 
 void AGNRPlayerCharacter::PossessedBy(AController* NewController)

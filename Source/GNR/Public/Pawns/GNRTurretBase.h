@@ -10,7 +10,7 @@ class USceneComponent;
 class UStaticMeshComponent;
 class USphereComponent;
 class UCapsuleComponent;
-class AGNRProjectileBase;
+class AGNRProjectile;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTurretDiedSignature, AGNRTurretBase*, DeadTurret);
 
@@ -114,7 +114,7 @@ protected:
 	float FireInterval = 1.2f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Turret|Fire")
-	TSubclassOf<AGNRProjectileBase> ProjectileClass;
+	TSubclassOf<AGNRProjectile> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Turret|Combat")
 	float MaxHealth = 1.f;

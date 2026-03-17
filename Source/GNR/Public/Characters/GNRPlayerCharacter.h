@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Characters/GNRCharacterBase.h"
 #include "GameplayTagContainer.h"
+#include "GameplayEffectTypes.h"
 #include "GNRPlayerCharacter.generated.h"
 
 class USkeletalMeshComponent;
@@ -37,6 +38,12 @@ public:
 	void SetHasWeapon(bool InputbHasWeapon) { bHasWeapon = InputbHasWeapon; }
 
 protected:
+	virtual void BeginPlay() override;
+	
+	void OnCurrentSpeedChanged(const FOnAttributeChangeData& Data);
+
+	void ApplyCurrentSpeedToMovement(float NewSpeed);
+
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;
 	//~ End APawn Interface

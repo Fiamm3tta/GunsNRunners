@@ -11,8 +11,10 @@ UGNRAttributeSet::UGNRAttributeSet()
 {
 	InitCurrentHealth(1.f);
 	InitMaxHealth(1.f);
+	InitBaseSpeed(1.f);
 	InitCurrentSpeed(1.f);
 	InitMaxSpeed(1.f);
+	InitMinSpeed(1.f);
 	InitAttackPower(1.f);
 }
 
@@ -27,7 +29,7 @@ void UGNRAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 
 	if (Data.EvaluatedData.Attribute == GetCurrentSpeedAttribute())
 	{
-		const float NewCurrentSpeed = FMath::Clamp(GetCurrentSpeed(), 0.f, GetBaseSpeed());
+		const float NewCurrentSpeed = FMath::Clamp(GetCurrentSpeed(), GetMinSpeed(), GetMaxSpeed());
 
 		SetCurrentSpeed(NewCurrentSpeed);
 	}
@@ -40,12 +42,13 @@ void UGNRAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		const float NewCurrentHealth = FMath::Clamp(OldHealth - DamageDone, 0.f, GetMaxHealth());
 
 		SetCurrentHealth(NewCurrentHealth);
-
+		/*
 		UE_LOG(LogTemp, Display, 
 			TEXT("Old Health: %f, Damage Done: %f, NewCurrentHealth: %f"),
 			OldHealth,
 			DamageDone,
 			NewCurrentHealth);
+		*/
 	}
 
 	if (GetCurrentHealth() == 0.f)

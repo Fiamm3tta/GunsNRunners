@@ -1,19 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Weapon/GNRProjectileBase.h"
+#include "Projectile/GNRProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include "Characters/GNRCharacterBase.h"
 #include "Weapon/GNRWeaponBase.h"
+#include "Pawns/GNRTurretBase.h"
 
-AGNRProjectileBase::AGNRProjectileBase()
+AGNRProjectile::AGNRProjectile()
 {
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
 	CollisionComp->InitSphereRadius(5.0f);
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
-	CollisionComp->OnComponentHit.AddDynamic(this, &AGNRProjectileBase::OnHit);		// set up a notification for when this component hits something blocking
+	CollisionComp->OnComponentHit.AddDynamic(this, &AGNRProjectile::OnHit);		// set up a notification for when this component hits something blocking
 
 	// Players can't walk on it
 	CollisionComp->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
@@ -34,14 +35,9 @@ AGNRProjectileBase::AGNRProjectileBase()
 	InitialLifeSpan = 3.0f;
 }
 
-void AGNRProjectileBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+void AGNRProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (!OtherActor || OtherActor == this)
-	{
-		return;
-	}
-
-	if (OtherActor == GetOwner() || OtherActor == GetInstigator())
 	{
 		return;
 	}
@@ -60,7 +56,7 @@ void AGNRProjectileBase::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor,
 	}
 }
 
-bool AGNRProjectileBase::ShouldDestroyOnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp) const
+bool AGNRProjectile::ShouldDestroyOnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp) const
 {
 	if (OtherActor->IsA(AGNRCharacterBase::StaticClass()))
 	{
@@ -72,12 +68,17 @@ bool AGNRProjectileBase::ShouldDestroyOnHit(AActor* OtherActor, UPrimitiveCompon
 		return true;
 	}
 
-	if (OtherActor->IsA(AGNRProjectileBase::StaticClass()))
+	if (OtherActor->IsA(AGNRProjectile::StaticClass()))
 	{
 		return true;
 	}
 
-	// 이후 추가될 터렛형 적도 여기서 확인
+	if (OtherActor->IsA(AGNRTurretBase::StaticClass()))
+	{
+		return true;
+	}
 
 	return false;
 }
+
+

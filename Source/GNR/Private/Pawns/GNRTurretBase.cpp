@@ -9,7 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "TimerManager.h"
-#include "Weapon/GNRProjectileBase.h"
+#include "Projectile/GNRProjectile.h"
 
 // Sets default values
 AGNRTurretBase::AGNRTurretBase()
@@ -399,7 +399,7 @@ void AGNRTurretBase::FireProjectile()
 	SpawnParams.SpawnCollisionHandlingOverride =
 		ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	GetWorld()->SpawnActor<AGNRProjectileBase>(
+	GetWorld()->SpawnActor<AGNRProjectile>(
 		ProjectileClass,
 		SpawnLocation,
 		SpawnRotation,

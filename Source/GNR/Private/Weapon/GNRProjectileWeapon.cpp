@@ -2,7 +2,7 @@
 
 
 #include "Weapon/GNRProjectileWeapon.h"
-#include "Weapon/GNRProjectileBase.h"
+#include "Projectile/GNRProjectile.h"
 #include "Characters/GNRPlayerCharacter.h"
 
 void AGNRProjectileWeapon::FireInternal()
@@ -28,7 +28,7 @@ void AGNRProjectileWeapon::SpawnProjectile()
     Params.Owner = OwningPlayerCharacter;
     Params.Instigator = OwningPlayerCharacter;
 
-    GetWorld()->SpawnActor<AGNRProjectileBase>(
+    GetWorld()->SpawnActor<AGNRProjectile>(
         ProjectileClass,
         SpawnLocation,
         SpawnRotation,

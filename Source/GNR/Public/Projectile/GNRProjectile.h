@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GNRProjectileBase.generated.h"
+#include "GNRProjectile.generated.h"
 
 class USphereComponent;
 class UProjectileMovementComponent;
 
 UCLASS()
-class GNR_API AGNRProjectileBase : public AActor
+class GNR_API AGNRProjectile : public AActor
 {
 	GENERATED_BODY()
-	
+
 	/** Sphere collision component */
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 	USphereComponent* CollisionComp;
@@ -21,9 +21,10 @@ class GNR_API AGNRProjectileBase : public AActor
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
-
-public:
-	AGNRProjectileBase();
+	
+public:	
+	// Sets default values for this actor's properties
+	AGNRProjectile();
 
 	/** called when projectile hits something */
 	UFUNCTION()

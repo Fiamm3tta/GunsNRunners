@@ -46,6 +46,10 @@ public:
 	FGameplayAttributeData MaxSpeed;
 	ATTRIBUTE_ACCESSORS(UGNRAttributeSet, MaxSpeed)
 
+	UPROPERTY(BlueprintReadOnly, Category = "Speed")
+	FGameplayAttributeData MinSpeed;
+	ATTRIBUTE_ACCESSORS(UGNRAttributeSet, MinSpeed)
+
 	UPROPERTY(BlueprintReadOnly, Category = "Damage")
 	FGameplayAttributeData AttackPower;
 	ATTRIBUTE_ACCESSORS(UGNRAttributeSet, AttackPower)

@@ -3,6 +3,7 @@
 
 #include "Characters/GNRCharacterBase.h"
 #include "AbilitySystem/GNRAbilitySystemComponent.h"
+#include "AbilitySystem/GNRAttributeSet.h"
 
 // Sets default values
 AGNRCharacterBase::AGNRCharacterBase()
@@ -14,6 +15,7 @@ AGNRCharacterBase::AGNRCharacterBase()
 	GetMesh()->bReceivesDecals = false;
 
 	GNRAbilitySystemComponent = CreateDefaultSubobject<UGNRAbilitySystemComponent>(TEXT("GNRAbilitySystemComponent"));
+	GNRAttributeSet = CreateDefaultSubobject<UGNRAttributeSet>(TEXT("GNRAttributeSet"));
 }
 
 UAbilitySystemComponent* AGNRCharacterBase::GetAbilitySystemComponent() const

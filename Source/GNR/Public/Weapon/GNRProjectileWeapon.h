@@ -6,7 +6,7 @@
 #include "Weapon/GNRWeaponBase.h"
 #include "GNRProjectileWeapon.generated.h"
 
-class AGNRProjectileBase;
+class AGNRProjectile;
 
 /**
  * 
@@ -23,6 +23,6 @@ protected:
 	void SpawnProjectile();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Projectile")
-	TSubclassOf<AGNRProjectileBase> ProjectileClass;
+	TSubclassOf<AGNRProjectile> ProjectileClass;
 	
 };
