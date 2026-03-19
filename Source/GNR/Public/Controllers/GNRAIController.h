@@ -6,6 +6,9 @@
 #include "AIController.h"
 #include "GNRAIController.generated.h"
 
+class UAIPerceptionComponent;
+class UAISenseConfig_Sight;
+
 /**
  * 
  */
@@ -13,5 +16,24 @@ UCLASS()
 class GNR_API AGNRAIController : public AAIController
 {
 	GENERATED_BODY()
+
+public:
+
+	AGNRAIController(const FObjectInitializer& ObjectInitializer);
+
+	//~ Begin IGenericTeamAgentInterface Interface.
+	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
+	//~ End IGenericTeamAgentInterface Interface
+
+protected:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UAIPerceptionComponent* EnemyPerceptionComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UAISenseConfig_Sight* AISenseConfig_Sight;
+
+	UFUNCTION()
+	virtual void OnEnemyPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 	
 };
