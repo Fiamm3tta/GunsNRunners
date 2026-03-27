@@ -4,6 +4,7 @@
 #include "Weapon/GNRProjectileWeapon.h"
 #include "Projectile/GNRProjectile.h"
 #include "Characters/GNRPlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 void AGNRProjectileWeapon::FireInternal()
 {
@@ -23,14 +24,19 @@ void AGNRProjectileWeapon::SpawnProjectile()
     const FVector SpawnLocation = MuzzlePoint->GetComponentLocation();
     const FVector ShootDirection = GetDirectionToAimPoint();
     const FRotator SpawnRotation = ShootDirection.Rotation();
+    const FTransform SpawnTransform(SpawnRotation, SpawnLocation);
 
-    FActorSpawnParameters Params;
-    Params.Owner = OwningPlayerCharacter;
-    Params.Instigator = OwningPlayerCharacter;
-
-    GetWorld()->SpawnActor<AGNRProjectile>(
+    AGNRProjectile* Projectile = GetWorld()->SpawnActorDeferred<AGNRProjectile>(
         ProjectileClass,
-        SpawnLocation,
-        SpawnRotation,
-        Params);
+        SpawnTransform,
+        OwningPlayerCharacter,
+        OwningPlayerCharacter
+    );
+
+    if (!Projectile) return;
+
+    Projectile->InitProjectileData(DamageEffectClass);
+
+    UGameplayStatics::FinishSpawningActor(Projectile, SpawnTransform);
+
 }

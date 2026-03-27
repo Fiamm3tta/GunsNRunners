@@ -4,9 +4,8 @@
 #include "Projectile/GNRProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
-#include "Characters/GNRCharacterBase.h"
-#include "Weapon/GNRWeaponBase.h"
-#include "Pawns/GNRTurretBase.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystem/GNRAbilitySystemComponent.h"
 
 AGNRProjectile::AGNRProjectile()
 {
@@ -35,6 +34,11 @@ AGNRProjectile::AGNRProjectile()
 	InitialLifeSpan = 3.0f;
 }
 
+void AGNRProjectile::InitProjectileData(TSubclassOf<UGameplayEffect> InDamageEffectClass)
+{
+	DamageEffectClass = InDamageEffectClass;
+}
+
 void AGNRProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	if (!OtherActor || OtherActor == this)
@@ -42,43 +46,43 @@ void AGNRProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 		return;
 	}
 
-	// 플레이어, 적, 다른 투사체면 파괴
-	if (ShouldDestroyOnHit(OtherActor, OtherComp))
+	AActor* SourceActor = GetInstigator() ? Cast<AActor>(GetInstigator()) : GetOwner();
+	if (!SourceActor || !DamageEffectClass)
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(SourceActor);
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
+
+	// 플레이어 혹은 적 일 경우(ASC가 존재할 경우) 데미지 적용 후 파괴
+	if (SourceASC && TargetASC)
+	{
+		FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
+		EffectContext.AddSourceObject(this);
+		EffectContext.AddHitResult(Hit);
+
+		FGameplayEffectSpecHandle SpecHandle =
+			SourceASC->MakeOutgoingSpec(DamageEffectClass, 1.f, EffectContext);
+
+		if (SpecHandle.IsValid())
+		{
+			SourceASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
+			Destroy();
+			return;
+		}
+	}
+
+	// 다른 투사체일 경우 단순 파괴
+	if (OtherActor->IsA(AGNRProjectile::StaticClass()))
 	{
 		Destroy();
 		return;
 	}
 
-	// 물리 오브젝트면 impulse 주고 계속 튕기거나 파괴 정책 선택
+	// 물리 오브젝트면 impulse를 주어 튕김
 	if (OtherComp && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 	}
 }
-
-bool AGNRProjectile::ShouldDestroyOnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp) const
-{
-	if (OtherActor->IsA(AGNRCharacterBase::StaticClass()))
-	{
-		return true;
-	}
-
-	if (OtherActor->IsA(AGNRWeaponBase::StaticClass()))
-	{
-		return true;
-	}
-
-	if (OtherActor->IsA(AGNRProjectile::StaticClass()))
-	{
-		return true;
-	}
-
-	if (OtherActor->IsA(AGNRTurretBase::StaticClass()))
-	{
-		return true;
-	}
-
-	return false;
-}
-
-

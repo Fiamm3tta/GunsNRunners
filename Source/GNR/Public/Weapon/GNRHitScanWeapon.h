@@ -22,7 +22,4 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Hitscan")
 	float HitScanRange = 10000.0f;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Hitscan")
-	float Damage = 1.0f;
 };

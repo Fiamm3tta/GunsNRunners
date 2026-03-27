@@ -5,6 +5,8 @@
 #include "Characters/GNRPlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
+#include "AbilitySystem/GNRAbilitySystemComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
 
 void AGNRHitScanWeapon::FireInternal()
 {
@@ -45,13 +47,23 @@ void AGNRHitScanWeapon::PerformHitscan()
         AActor* HitActor = Hit.GetActor();
         if (HitActor)
         {
-            UGameplayStatics::ApplyDamage(
-                HitActor,
-                Damage,
-                OwningPlayerCharacter->GetController(),
-                OwningPlayerCharacter,
-                UDamageType::StaticClass()
-            );
+            UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwningPlayerCharacter);
+            UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitActor);
+
+            if (SourceASC && TargetASC && DamageEffectClass)
+            {
+                FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
+                EffectContext.AddSourceObject(this);
+                EffectContext.AddHitResult(Hit);
+
+                FGameplayEffectSpecHandle SpecHandle =
+                    SourceASC->MakeOutgoingSpec(DamageEffectClass, 1.f, EffectContext);
+
+                if (SpecHandle.IsValid())
+                {
+                    SourceASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
+                }
+            }
         }
 
         DrawDebugLine(GetWorld(), Start, Hit.ImpactPoint, FColor::Red, false, 1.0f, 0, 1.5f);

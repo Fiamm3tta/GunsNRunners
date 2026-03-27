@@ -12,6 +12,7 @@ class AGNRPlayerCharacter;
 class UWeaponPickUpComponent;
 class USkeletalMeshComponent;
 class USceneComponent;
+class UGameplayEffect;
 
 UCLASS()
 class GNR_API AGNRWeaponBase : public AActor
@@ -73,6 +74,9 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
     float AimTraceDistance = 10000.f;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+    TSubclassOf<UGameplayEffect> DamageEffectClass;
     
     UPROPERTY(Transient)
     TObjectPtr<AGNRPlayerCharacter> OwningPlayerCharacter;

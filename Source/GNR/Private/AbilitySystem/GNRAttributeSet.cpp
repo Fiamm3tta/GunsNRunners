@@ -42,17 +42,17 @@ void UGNRAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		const float NewCurrentHealth = FMath::Clamp(OldHealth - DamageDone, 0.f, GetMaxHealth());
 
 		SetCurrentHealth(NewCurrentHealth);
-		/*
+		
 		UE_LOG(LogTemp, Display, 
 			TEXT("Old Health: %f, Damage Done: %f, NewCurrentHealth: %f"),
 			OldHealth,
 			DamageDone,
 			NewCurrentHealth);
-		*/
+		
 	}
 
 	if (GetCurrentHealth() == 0.f)
 	{
-
+		UGNRFunctionLibrary::AddGameplayTagToActorIfNone(Data.Target.GetAvatarActor(), GNRGameplayTags::Shared_Status_Death);
 	}
 }

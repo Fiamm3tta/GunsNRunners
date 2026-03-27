@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UProjectileMovementComponent;
+class UGameplayEffect;
 
 UCLASS()
 class GNR_API AGNRProjectile : public AActor
@@ -21,16 +22,19 @@ class GNR_API AGNRProjectile : public AActor
 	/** Projectile movement component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
 	
 public:	
 	// Sets default values for this actor's properties
 	AGNRProjectile();
 
+	void InitProjectileData(TSubclassOf<UGameplayEffect> InDamageEffectClass);
+
 	/** called when projectile hits something */
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
-	bool ShouldDestroyOnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp) const;
 
 	/** Returns CollisionComp subobject **/
 	USphereComponent* GetCollisionComp() const { return CollisionComp; }
