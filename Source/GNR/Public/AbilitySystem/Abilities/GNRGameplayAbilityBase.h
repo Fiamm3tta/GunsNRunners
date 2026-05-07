@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
-#include "Types/GNRStructTypes.h"
+#include "Types/GNREnumTypes.h"
 #include "GNRGameplayAbilityBase.generated.h"
 
 class UWarriorAbilitySystemComponent;
@@ -35,4 +35,9 @@ protected:
 
 	UFUNCTION(BlueprintPure, Category = "GNR|Ability")
 	UGNRAbilitySystemComponent* GetGNRAbilitySystemComponentFromActorInfo() const;
+
+	FActiveGameplayEffectHandle NativeApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle);
+
+	UFUNCTION(BlueprintCallable, Category = "GNR|Ability", meta = (DisplayName = "Apply Gameplay Effect Spec Handle To Target Actor", ExpandEnumAsExecs = "OutSuccessType"))
+	FActiveGameplayEffectHandle BP_ApplyEffectSpecHandleToTarget(AActor* TargetActor, const FGameplayEffectSpecHandle& InSpecHandle, EGNRSuccessType& OutSuccessType);
 };

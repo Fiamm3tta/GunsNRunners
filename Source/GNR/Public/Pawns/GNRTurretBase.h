@@ -129,5 +129,4 @@ protected:
 	TObjectPtr<APawn> CurrentTarget;
 
 	FTimerHandle FireTimerHandle;
-
 };

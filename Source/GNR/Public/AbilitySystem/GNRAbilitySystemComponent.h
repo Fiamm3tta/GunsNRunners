@@ -17,4 +17,7 @@ class GNR_API UGNRAbilitySystemComponent : public UAbilitySystemComponent
 public:
 	void OnAbilityInputPressed(const FGameplayTag& InInputTag);
 	void OnAbilityInputReleased(const FGameplayTag& InInputTag);
+
+	UFUNCTION(BlueprintCallable, Category = "GNR|Ability")
+	bool TryActivateAbilityByTag(FGameplayTag AbilityTagToActivate);
 };

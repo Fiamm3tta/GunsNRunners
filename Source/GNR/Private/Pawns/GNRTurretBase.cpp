@@ -226,17 +226,17 @@ bool AGNRTurretBase::HasLineOfSightToTarget() const
 
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(TurretLOS), false, this);
 	Params.AddIgnoredActor(this);
-
+	
 	const bool bHit = GetWorld()->LineTraceSingleByChannel(
 		HitResult,
 		Start,
 		End,
 		ECC_Visibility,
 		Params);
-
+	/*
 	const FVector DebugEnd = bHit ? HitResult.ImpactPoint : End;
 	const FColor LineColor = bHit ? FColor::Red : FColor::Green;
-
+	
 	DrawDebugLine(
 		GetWorld(),
 		Start,
@@ -301,7 +301,7 @@ bool AGNRTurretBase::HasLineOfSightToTarget() const
 		Warning,
 		TEXT("[TurretLOS] Result=%s"),
 		bHasLOS ? TEXT("TRUE") : TEXT("FALSE"));
-
+	*/
 	return HitResult.GetActor() == CurrentTarget;
 }
 
@@ -375,7 +375,7 @@ void AGNRTurretBase::TryFire()
 {
 	if (!CanFire())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("I cannot fire..."));
+		// UE_LOG(LogTemp, Warning, TEXT("I cannot fire..."));
 		return;
 	}
 
@@ -384,7 +384,7 @@ void AGNRTurretBase::TryFire()
 
 void AGNRTurretBase::FireProjectile()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Fire!!!"));
+	// UE_LOG(LogTemp, Warning, TEXT("Fire!!!"));
 	if (!ProjectileClass)
 	{
 		return;
@@ -404,6 +404,7 @@ void AGNRTurretBase::FireProjectile()
 		SpawnLocation,
 		SpawnRotation,
 		SpawnParams);
+
 }
 
 void AGNRTurretBase::Die()

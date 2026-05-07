@@ -77,6 +77,12 @@ void AGNRProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 	if (OtherActor->IsA(AGNRProjectile::StaticClass()))
 	{
 		Destroy();
+
+		if (OtherActor)
+		{
+			OtherActor->Destroy();
+		}
+
 		return;
 	}
 

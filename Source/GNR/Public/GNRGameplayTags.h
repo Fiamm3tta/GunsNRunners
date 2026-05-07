@@ -31,6 +31,9 @@ namespace GNRGameplayTags
 	GNR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_Death);
 
 	GNR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_HitReact);
+	GNR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Event_MeleeHit);
 
 	GNR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Status_Death);
+
+	GNR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_SetByCaller_AttackPower);
 }

@@ -35,7 +35,7 @@ protected:
 
 private:
 	void InitEnemyStartUpData();
-
+	
 public:
 	FORCEINLINE UEnemyCombatComponent* GetEnemyCombatComponent() const { return EnemyCombatComponent; }
 };
