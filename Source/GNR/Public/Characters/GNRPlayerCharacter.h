@@ -13,6 +13,7 @@ class UCameraComponent;
 class UDataAsset_InputConfig;
 struct FInputActionValue;
 class AGNRWeaponBase;
+class UPlayerUIComponent;
 
 /**
  * 
@@ -37,6 +38,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void SetHasWeapon(bool InputbHasWeapon) { bHasWeapon = InputbHasWeapon; }
 
+	//~ Begin IPawnUIInterface Interface.
+	virtual UPawnUIComponent* GetPawnUIComponent() const override;
+	virtual UPlayerUIComponent* GetPlayerUIComponent() const override;
+	//~ End IPawnUIInterface Interface
+
 protected:
 	virtual void BeginPlay() override;
 	
@@ -57,6 +63,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* FirstPersonCameraComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "UI", meta = (AllowPrivateAccess = "true"))
+	UPlayerUIComponent* PlayerUIComponent;
 #pragma endregion
 
 #pragma region Inputs

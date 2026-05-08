@@ -35,5 +35,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "GNR|FunctionLibrary", meta = (DisplayName = "Get Pawn Combat Component From Actor", ExpandEnumAsExecs = "OutValidType"))
 	static UPawnCombatComponent* BP_GetPawnCombatComponentFromActor(AActor* InActor, EGNRValidType& OutValidType);
+	
+	UFUNCTION(BlueprintCallable, Category = "GNR|FunctionLibrary", meta = (Latent, WorldContext = "WorldContextObject", LatentInfo = "LatentInfo", ExpandEnumAsExecs = "CountDownInput|CountDownOutput", TotalTime = "1.0", UpdateInterval = "0.1"))
+	static void CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval,
+		float& OutRemainingTime, EGNRCountDownActionInput CountDownInput,
+		UPARAM(DisplayName = "Output") EGNRCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo);
+	
 };
 

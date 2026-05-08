@@ -20,3 +20,18 @@ enum class EGNRSuccessType : uint8
 	Successful,
 	Failed
 };
+
+UENUM()
+enum class EGNRCountDownActionInput : uint8
+{
+	Start,
+	Cancel
+};
+
+UENUM()
+enum class EGNRCountDownActionOutput : uint8
+{
+	Updated,
+	Completed,
+	Cancelled
+};

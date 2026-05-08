@@ -5,6 +5,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/GNRAbilitySystemComponent.h"
 #include "Interfaces/PawnCombatInterface.h"
+#include "Types/GNRCountDownAction.h"
 
 UGNRAbilitySystemComponent* UGNRFunctionLibrary::NativeGetGNRASCFromActor(AActor* InActor)
 {
@@ -64,4 +65,43 @@ UPawnCombatComponent* UGNRFunctionLibrary::BP_GetPawnCombatComponentFromActor(AA
 	OutValidType = CombatComponent ? EGNRValidType::Valid : EGNRValidType::Invalid;
 
 	return CombatComponent;
+}
+
+void UGNRFunctionLibrary::CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval, float& OutRemainingTime, EGNRCountDownActionInput CountDownInput, UPARAM(DisplayName = "Output") EGNRCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo)
+{
+    UWorld* World = nullptr;
+
+    if (GEngine)
+    {
+        World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull);
+    }
+
+    if (!World)
+    {
+        return;
+    }
+
+    FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+
+    FGNRCountDownAction* FoundAction = LatentActionManager.FindExistingAction<FGNRCountDownAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+    if (CountDownInput == EGNRCountDownActionInput::Start)
+    {
+        if (!FoundAction)
+        {
+            LatentActionManager.AddNewAction(
+                LatentInfo.CallbackTarget,
+                LatentInfo.UUID,
+                new FGNRCountDownAction(TotalTime, UpdateInterval, OutRemainingTime, CountDownOutput, LatentInfo)
+            );
+        }
+    }
+
+    if (CountDownInput == EGNRCountDownActionInput::Cancel)
+    {
+        if (FoundAction)
+        {
+            FoundAction->CancelAction();
+        }
+    }
 }

@@ -14,6 +14,7 @@
 #include "AbilitySystem/GNRAbilitySystemComponent.h"
 #include "Weapon/GNRWeaponBase.h"
 #include "AbilitySystem/GNRAttributeSet.h"
+#include "Components/UI/PlayerUIComponent.h"
 
 AGNRPlayerCharacter::AGNRPlayerCharacter()
 {
@@ -40,6 +41,8 @@ AGNRPlayerCharacter::AGNRPlayerCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
+
+	PlayerUIComponent = CreateDefaultSubobject<UPlayerUIComponent>(TEXT("PlayerUIComponent"));
 }
 
 void AGNRPlayerCharacter::EquipWeapon(AGNRWeaponBase* NewWeapon)
@@ -73,6 +76,16 @@ void AGNRPlayerCharacter::UnequipWeapon()
 	CurrentWeapon->OnUnequipped();
 	CurrentWeapon = nullptr;
 	bHasWeapon = false;
+}
+
+UPawnUIComponent* AGNRPlayerCharacter::GetPawnUIComponent() const
+{
+	return PlayerUIComponent;
+}
+
+UPlayerUIComponent* AGNRPlayerCharacter::GetPlayerUIComponent() const
+{
+	return PlayerUIComponent;
 }
 
 void AGNRPlayerCharacter::BeginPlay()

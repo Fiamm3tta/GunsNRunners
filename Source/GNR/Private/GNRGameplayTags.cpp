@@ -21,6 +21,10 @@ namespace GNRGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Skill, "Player.Ability.Skill");
 	UE_DEFINE_GAMEPLAY_TAG(Player_Ability_Unequip, "Player.Ability.Unequip");
 
+	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_Dash, "Player.Cooldown.Dash");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_Shoot, "Player.Cooldown.Shoot");
+	UE_DEFINE_GAMEPLAY_TAG(Player_Cooldown_Skill, "Player.Cooldown.Skill");
+
 	/** Enemy Tags **/
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Weapon, "Enemy.Weapon");
 	UE_DEFINE_GAMEPLAY_TAG(Enemy_Ability_Attack, "Enemy.Ability.Attack");
