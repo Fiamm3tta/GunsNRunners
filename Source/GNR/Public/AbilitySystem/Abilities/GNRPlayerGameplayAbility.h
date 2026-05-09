@@ -18,7 +18,7 @@ class GNR_API UGNRPlayerGameplayAbility : public UGNRGameplayAbilityBase
 	GENERATED_BODY()
 	
 public:
-	UFUNCTION(BlueprintPure, Category = "GNR|Asbility")
+	UFUNCTION(BlueprintPure, Category = "GNR|Ability")
 	AGNRPlayerCharacter* GetPlayerCharacterFromActorInfo();
 	
 	UFUNCTION(BlueprintPure, Category = "GNR|Ability")

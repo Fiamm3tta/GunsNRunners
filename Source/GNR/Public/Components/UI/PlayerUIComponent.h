@@ -9,6 +9,10 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnAbilityCooldownBeginDelegate, FGameplayTag, AbilityInputTag, float, TotalCooldownTime, float, RemainingCooldownTime);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHitReact);
+
+
+
 /**
  * 
  */
@@ -19,5 +23,8 @@ class GNR_API UPlayerUIComponent : public UPawnUIComponent
 
 	UPROPERTY(BlueprintCallable, BlueprintAssignable)
 	FOnAbilityCooldownBeginDelegate OnAbilityCooldownBegin;
+
+	UPROPERTY(BlueprintCallable, BlueprintAssignable)
+	FOnHitReact OnHitReact;
 	
 };

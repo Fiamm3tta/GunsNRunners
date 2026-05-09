@@ -15,6 +15,7 @@ class GNR_API AGNRProjectile : public AActor
 {
 	GENERATED_BODY()
 
+protected:
 	/** Sphere collision component */
 	UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
 	USphereComponent* CollisionComp;

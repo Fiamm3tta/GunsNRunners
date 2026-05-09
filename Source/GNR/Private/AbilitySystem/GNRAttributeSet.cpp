@@ -6,6 +6,9 @@
 #include "GNRFunctionLibrary.h"
 #include "GNRGameplayTags.h"
 #include "Interfaces/PawnCombatInterface.h"
+#include "Interfaces/PawnUIInterface.h"
+#include "Components/UI/PawnUIComponent.h"
+#include "Components/UI/PlayerUIComponent.h"
 
 UGNRAttributeSet::UGNRAttributeSet()
 {
@@ -20,11 +23,24 @@ UGNRAttributeSet::UGNRAttributeSet()
 
 void UGNRAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
+	if (!CachedPawnUIInterface.IsValid())
+	{
+		CachedPawnUIInterface = TWeakInterfacePtr<IPawnUIInterface>(Data.Target.GetAvatarActor());
+	}
+
+	checkf(CachedPawnUIInterface.IsValid(), TEXT("%s didn't implement IPawnUIInterface"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+
+	UPawnUIComponent* PawnUIComponent = CachedPawnUIInterface->GetPawnUIComponent();
+
+	checkf(PawnUIComponent, TEXT("Couldn't extract a PawnUIComponent from %s"), *Data.Target.GetAvatarActor()->GetActorNameOrLabel());
+
 	if (Data.EvaluatedData.Attribute == GetCurrentHealthAttribute())
 	{
 		const float NewCurrentHealth = FMath::Clamp(GetCurrentHealth(), 0.f, GetMaxHealth());
 
 		SetCurrentHealth(NewCurrentHealth);
+
+		PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth());
 	}
 
 	if (Data.EvaluatedData.Attribute == GetCurrentSpeedAttribute())
@@ -32,6 +48,8 @@ void UGNRAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		const float NewCurrentSpeed = FMath::Clamp(GetCurrentSpeed(), GetMinSpeed(), GetMaxSpeed());
 
 		SetCurrentSpeed(NewCurrentSpeed);
+
+		PawnUIComponent->OnCurrentSpeedChanged.Broadcast(GetCurrentSpeed());
 	}
 
 	if (Data.EvaluatedData.Attribute == GetDamageTakenAttribute())
@@ -50,6 +68,8 @@ void UGNRAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 			NewCurrentHealth);
 		
 	}
+
+	PawnUIComponent->OnCurrentHealthChanged.Broadcast(GetCurrentHealth());
 
 	if (GetCurrentHealth() == 0.f)
 	{
