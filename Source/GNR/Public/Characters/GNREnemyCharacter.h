@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Characters/GNRCharacterBase.h"
+#include "GameplayEffectTypes.h"
 #include "GNREnemyCharacter.generated.h"
 
 class UEnemyCombatComponent;
@@ -31,6 +32,10 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	void OnCurrentSpeedChanged(const FOnAttributeChangeData& Data);
+
+	void ApplyCurrentSpeedToMovement(float NewSpeed);
 
 	//~ Begin APawn Interface.
 	virtual void PossessedBy(AController* NewController) override;

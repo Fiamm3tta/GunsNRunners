@@ -20,7 +20,7 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnValueChangedDelegate OnCurrentHealthChanged;
 
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintCallable, BlueprintAssignable)
 	FOnValueChangedDelegate OnCurrentSpeedChanged;
 	
 };

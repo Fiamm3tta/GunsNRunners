@@ -7,6 +7,8 @@
 #include "Engine/AssetManager.h"
 #include "DataAssets/StartUpData/DataAsset_EnemyStartUpData.h"
 #include "Components/UI/EnemyUIComponent.h"
+#include "AbilitySystem/GNRAbilitySystemComponent.h"
+#include "AbilitySystem/GNRAttributeSet.h"
 
 AGNREnemyCharacter::AGNREnemyCharacter()
 {
@@ -45,6 +47,41 @@ UEnemyUIComponent* AGNREnemyCharacter::GetEnemyUIComponent() const
 void AGNREnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (!GNRAbilitySystemComponent || !GNRAttributeSet)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ASC or AttributeSet is null on % s"), *GetNameSafe(this));
+		return;
+	}
+
+	GNRAbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
+		UGNRAttributeSet::GetCurrentSpeedAttribute()
+	).AddUObject(this, &AGNREnemyCharacter::OnCurrentSpeedChanged);
+
+	ApplyCurrentSpeedToMovement(GNRAttributeSet->GetCurrentSpeed());
+}
+
+void AGNREnemyCharacter::OnCurrentSpeedChanged(const FOnAttributeChangeData& Data)
+{
+	const float ClampedSpeed = FMath::Clamp(
+		Data.NewValue,
+		GNRAttributeSet->GetMinSpeed(),
+		GNRAttributeSet->GetMaxSpeed()
+	);
+
+	ApplyCurrentSpeedToMovement(ClampedSpeed);
+
+	UE_LOG(LogTemp, Log, TEXT("CurrentSpeed changed: Old=%f New=%f"), Data.OldValue, Data.NewValue);
+}
+
+void AGNREnemyCharacter::ApplyCurrentSpeedToMovement(float NewSpeed)
+{
+	if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+	{
+		MoveComp->MaxWalkSpeed = NewSpeed;
+
+		UE_LOG(LogTemp, Log, TEXT("Applied MaxWalkSpeed: %f"), NewSpeed);
+	}
 }
 
 void AGNREnemyCharacter::PossessedBy(AController* NewController)

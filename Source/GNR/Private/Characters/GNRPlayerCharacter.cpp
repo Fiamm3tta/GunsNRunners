@@ -61,7 +61,7 @@ void AGNRPlayerCharacter::EquipWeapon(AGNRWeaponBase* NewWeapon)
 
 	CurrentWeapon = NewWeapon;
 	CurrentWeapon->OnEquipped(this);
-	SetHasWeapon(true);
+	bHasWeapon = true;
 	// UE_LOG(LogTemp, Warning, TEXT("EquipWeapon called"));
 }
 
@@ -108,7 +108,13 @@ void AGNRPlayerCharacter::BeginPlay()
 
 void AGNRPlayerCharacter::OnCurrentSpeedChanged(const FOnAttributeChangeData& Data)
 {
-	ApplyCurrentSpeedToMovement(Data.NewValue);
+	const float ClampedSpeed = FMath::Clamp(
+		Data.NewValue,
+		GNRAttributeSet->GetMinSpeed(),
+		GNRAttributeSet->GetMaxSpeed()
+	);
+
+	ApplyCurrentSpeedToMovement(ClampedSpeed);
 
 	UE_LOG(LogTemp, Log, TEXT("CurrentSpeed changed: Old=%f New=%f"), Data.OldValue, Data.NewValue);
 }
