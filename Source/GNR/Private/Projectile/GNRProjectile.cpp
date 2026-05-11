@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystem/GNRAbilitySystemComponent.h"
+#include "Pawns/GNRTurretBase.h"
 
 AGNRProjectile::AGNRProjectile()
 {
@@ -46,33 +47,6 @@ void AGNRProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 		return;
 	}
 
-	AActor* SourceActor = GetInstigator() ? Cast<AActor>(GetInstigator()) : GetOwner();
-	if (!SourceActor || !DamageEffectClass)
-	{
-		return;
-	}
-
-	UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(SourceActor);
-	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
-
-	// 플레이어 혹은 적 일 경우(ASC가 존재할 경우) 데미지 적용 후 파괴
-	if (SourceASC && TargetASC)
-	{
-		FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
-		EffectContext.AddSourceObject(this);
-		EffectContext.AddHitResult(Hit);
-
-		FGameplayEffectSpecHandle SpecHandle =
-			SourceASC->MakeOutgoingSpec(DamageEffectClass, 1.f, EffectContext);
-
-		if (SpecHandle.IsValid())
-		{
-			SourceASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
-			Destroy();
-			return;
-		}
-	}
-
 	// 다른 투사체일 경우 단순 파괴
 	if (OtherActor->IsA(AGNRProjectile::StaticClass()))
 	{
@@ -90,5 +64,70 @@ void AGNRProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 	if (OtherComp && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+
+		return;
+	}
+
+	// 터렛이 맞은 경우
+	if (OtherActor->IsA(AGNRTurretBase::StaticClass()))
+	{
+		AGNRTurretBase* Turret = Cast<AGNRTurretBase>(OtherActor);
+
+		Turret->ApplyDamage(1.f);
+
+		Destroy();
+
+		return;
+	}
+
+	AActor* SourceActor = GetInstigator() ? Cast<AActor>(GetInstigator()) : GetOwner();
+	if (!SourceActor || !DamageEffectClass)
+	{
+		return;
+	}
+
+	UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(SourceActor);
+	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor);
+
+	// 터렛이 쏜 투사체이고(ASC가 존재하지 않고), 플레이어 혹은 적이 맞은 경우
+	if (!SourceASC && TargetASC)
+	{
+		FGameplayEffectContextHandle EffectContext = TargetASC->MakeEffectContext();
+		EffectContext.AddSourceObject(this);
+
+		FGameplayEffectSpecHandle SpecHandle = TargetASC->MakeOutgoingSpec(
+			DamageEffectClass,
+			1.f,
+			EffectContext
+		);
+
+		if (!SpecHandle.IsValid())
+		{
+			return;
+		}
+
+		TargetASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+
+		Destroy();
+
+		return;
+	}
+
+	// 플레이어 혹은 적이 쏜 투사체이고, 플레이어 혹은 적이 맞은 경우(둘 다 ASC가 존재할 경우)
+	if (SourceASC && TargetASC)
+	{
+		FGameplayEffectContextHandle EffectContext = SourceASC->MakeEffectContext();
+		EffectContext.AddSourceObject(this);
+		EffectContext.AddHitResult(Hit);
+
+		FGameplayEffectSpecHandle SpecHandle =
+			SourceASC->MakeOutgoingSpec(DamageEffectClass, 1.f, EffectContext);
+
+		if (SpecHandle.IsValid())
+		{
+			SourceASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
+			Destroy();
+			return;
+		}
 	}
 }

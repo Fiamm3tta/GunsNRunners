@@ -18,6 +18,9 @@
 
 AGNRPlayerCharacter::AGNRPlayerCharacter()
 {
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 
@@ -78,6 +81,18 @@ void AGNRPlayerCharacter::UnequipWeapon()
 	bHasWeapon = false;
 }
 
+void AGNRPlayerCharacter::StartZoom()
+{
+	bIsZooming = true;
+	// UE_LOG(LogTemp, Display, TEXT("Zoom Start!"));
+}
+
+void AGNRPlayerCharacter::StopZoom()
+{
+	bIsZooming = false;
+	// UE_LOG(LogTemp, Display, TEXT("Zoom End!"));
+}
+
 UPawnUIComponent* AGNRPlayerCharacter::GetPawnUIComponent() const
 {
 	return PlayerUIComponent;
@@ -104,6 +119,28 @@ void AGNRPlayerCharacter::BeginPlay()
 
 	ApplyCurrentSpeedToMovement(GNRAttributeSet->GetCurrentSpeed());
 
+}
+
+void AGNRPlayerCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (!FirstPersonCameraComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Camera is null"));
+		return;
+	}
+
+	const float TargetFOV = bIsZooming ? ZoomFOV : DefaultFOV;
+
+	const float NewFOV = FMath::FInterpTo(
+		FirstPersonCameraComponent->FieldOfView,
+		TargetFOV,
+		DeltaTime,
+		ZoomInterpSpeed
+	);
+
+	FirstPersonCameraComponent->SetFieldOfView(NewFOV);
 }
 
 void AGNRPlayerCharacter::OnCurrentSpeedChanged(const FOnAttributeChangeData& Data)

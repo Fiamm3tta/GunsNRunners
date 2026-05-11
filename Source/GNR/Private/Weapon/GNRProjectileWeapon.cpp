@@ -11,9 +11,12 @@ void AGNRProjectileWeapon::FireInternal()
 	SpawnProjectile();
 }
 
-void AGNRProjectileWeapon::SkillInternal()
+void AGNRProjectileWeapon::SkillStartInternal()
 {
+}
 
+void AGNRProjectileWeapon::SkillEndInternal()
+{
 }
 
 void AGNRProjectileWeapon::SpawnProjectile()

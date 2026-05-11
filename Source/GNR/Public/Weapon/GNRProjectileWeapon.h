@@ -17,8 +17,9 @@ class GNR_API AGNRProjectileWeapon : public AGNRWeaponBase
 	GENERATED_BODY()
 
 protected:
-	void FireInternal() override;
-	void SkillInternal() override;
+	virtual void FireInternal() override;
+	virtual void SkillStartInternal() override;
+	virtual void SkillEndInternal() override;
 
 	void SpawnProjectile();
 

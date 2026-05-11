@@ -13,9 +13,26 @@ void AGNRHitScanWeapon::FireInternal()
 	PerformHitscan();
 }
 
-void AGNRHitScanWeapon::SkillInternal()
+void AGNRHitScanWeapon::SkillStartInternal()
 {
+    Super::SkillStartInternal();
+
+    if (OwningPlayerCharacter)
+    {
+        OwningPlayerCharacter->StartZoom();
+    }
 }
+
+void AGNRHitScanWeapon::SkillEndInternal()
+{
+    Super::SkillEndInternal();
+
+    if (OwningPlayerCharacter)
+    {
+        OwningPlayerCharacter->StopZoom();
+    }
+}
+
 
 void AGNRHitScanWeapon::PerformHitscan()
 {

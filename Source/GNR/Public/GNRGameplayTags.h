@@ -29,6 +29,7 @@ namespace GNRGameplayTags
 	/** Enemy Tags **/
 	GNR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Weapon);
 	GNR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Attack);
+	GNR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Enemy_Ability_Charge);
 
 	/** Shared Tags **/
 	GNR_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Shared_Ability_HitReact);

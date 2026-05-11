@@ -25,18 +25,37 @@ class GNR_API AGNRPlayerCharacter : public AGNRCharacterBase
 public:
 	AGNRPlayerCharacter();
 
+#pragma region Weapon Equip
 	void EquipWeapon(AGNRWeaponBase* NewWeapon);
 	
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void UnequipWeapon();
 
+	UFUNCTION(BlueprintCallable)
 	AGNRWeaponBase* GetCurrentWeapon() const { return CurrentWeapon; }
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
 	bool bHasWeapon = false;
 
+#pragma endregion
+	/*
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void SetHasWeapon(bool InputbHasWeapon) { bHasWeapon = InputbHasWeapon; }
+	*/
+
+#pragma region Zoom
+	bool bIsZooming = false;
+
+	float DefaultFOV = 90.0f;
+	float ZoomFOV = 60.0f;
+	float ZoomInterpSpeed = 12.0f;
+
+	float DefaultLookSensitivity = 1.0f;
+	float ZoomLookSensitivity = 0.5f;
+
+	void StartZoom();
+	void StopZoom();
+#pragma endregion
 
 	//~ Begin IPawnUIInterface Interface.
 	virtual UPawnUIComponent* GetPawnUIComponent() const override;
@@ -45,6 +64,8 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaTime) override;
 	
 	void OnCurrentSpeedChanged(const FOnAttributeChangeData& Data);
 

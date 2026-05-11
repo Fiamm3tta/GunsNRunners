@@ -20,7 +20,18 @@ void UGNRAbilitySystemComponent::OnAbilityInputPressed(const FGameplayTag& InInp
 }
 void UGNRAbilitySystemComponent::OnAbilityInputReleased(const FGameplayTag& InInputTag)
 {
+	if (!InInputTag.IsValid())
+	{
+		return;
+	}
 
+	for (const FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InInputTag) && AbilitySpec.IsActive())
+		{
+			CancelAbilityHandle(AbilitySpec.Handle);
+		}
+	}
 }
 
 bool UGNRAbilitySystemComponent::TryActivateAbilityByTag(FGameplayTag AbilityTagToActivate)

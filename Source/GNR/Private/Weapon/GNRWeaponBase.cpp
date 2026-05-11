@@ -61,25 +61,27 @@ void AGNRWeaponBase::Fire()
         return;
     }
 
-    // 발사 쿨타임 계산
-
     FireInternal();
-
-    // 발사 이펙트
 }
 
-void AGNRWeaponBase::Skill()
+void AGNRWeaponBase::SkillStart()
 {
     if (!OwningPlayerCharacter || !bEquipped)
     {
         return;
     }
 
-    // 스킬 쿨타임 계산
+    SkillStartInternal();
+}
 
-    SkillInternal();
+void AGNRWeaponBase::SkillEnd()
+{
+    if (!OwningPlayerCharacter || !bEquipped)
+    {
+        return;
+    }
 
-    // 스킬 이펙트
+    SkillEndInternal();
 }
 
 // Called when the game starts or when spawned
@@ -149,7 +151,11 @@ void AGNRWeaponBase::FireInternal()
 {
 }
 
-void AGNRWeaponBase::SkillInternal()
+void AGNRWeaponBase::SkillStartInternal()
+{
+}
+
+void AGNRWeaponBase::SkillEndInternal()
 {
 }
 

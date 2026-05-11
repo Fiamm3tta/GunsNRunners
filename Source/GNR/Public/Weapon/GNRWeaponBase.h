@@ -33,7 +33,10 @@ public:
     void Fire();
 
     UFUNCTION(BlueprintCallable, Category = "Weapon")
-    void Skill();
+    void SkillStart();
+
+    UFUNCTION(BlueprintCallable, Category = "Weapon")
+    void SkillEnd();
 
 protected:
 	// Called when the game starts or when spawned
@@ -47,7 +50,8 @@ protected:
     void SetWeaponCollisionEnabled(bool bEnabled);
 
     virtual void FireInternal();
-    virtual void SkillInternal();
+    virtual void SkillStartInternal();
+    virtual void SkillEndInternal();
 
     FVector GetAimPoint(float TraceDistance) const;
     FVector GetDirectionToAimPoint() const;
@@ -77,6 +81,10 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
     TSubclassOf<UGameplayEffect> DamageEffectClass;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon")
+    bool bUseSkillCooldown = false;
+
     
     UPROPERTY(Transient)
     TObjectPtr<AGNRPlayerCharacter> OwningPlayerCharacter;
