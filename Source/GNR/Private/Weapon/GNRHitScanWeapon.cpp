@@ -7,6 +7,7 @@
 #include "DrawDebugHelpers.h"
 #include "AbilitySystem/GNRAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "Pawns/GNRTurretBase.h"
 
 void AGNRHitScanWeapon::FireInternal()
 {
@@ -81,6 +82,13 @@ void AGNRHitScanWeapon::PerformHitscan()
                     SourceASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
                 }
             }
+        }
+
+        if (HitActor->IsA(AGNRTurretBase::StaticClass()))
+        {
+            AGNRTurretBase* Turret = Cast<AGNRTurretBase>(HitActor);
+
+            Turret->ApplyDamage(1.f);
         }
 
         DrawDebugLine(GetWorld(), Start, Hit.ImpactPoint, FColor::Red, false, 1.0f, 0, 1.5f);
