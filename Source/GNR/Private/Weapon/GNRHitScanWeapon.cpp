@@ -65,6 +65,13 @@ void AGNRHitScanWeapon::PerformHitscan()
         AActor* HitActor = Hit.GetActor();
         if (HitActor)
         {
+            if (HitActor->IsA(AGNRTurretBase::StaticClass()))
+            {
+                AGNRTurretBase* Turret = Cast<AGNRTurretBase>(HitActor);
+
+                Turret->ApplyDamage(1.f);
+            }
+
             UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OwningPlayerCharacter);
             UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(HitActor);
 
@@ -82,13 +89,6 @@ void AGNRHitScanWeapon::PerformHitscan()
                     SourceASC->ApplyGameplayEffectSpecToTarget(*SpecHandle.Data.Get(), TargetASC);
                 }
             }
-        }
-
-        if (HitActor->IsA(AGNRTurretBase::StaticClass()))
-        {
-            AGNRTurretBase* Turret = Cast<AGNRTurretBase>(HitActor);
-
-            Turret->ApplyDamage(1.f);
         }
 
         DrawDebugLine(GetWorld(), Start, Hit.ImpactPoint, FColor::Red, false, 1.0f, 0, 1.5f);

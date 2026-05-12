@@ -162,6 +162,8 @@ void AGNRPlayerCharacter::ApplyCurrentSpeedToMovement(float NewSpeed)
 	{
 		MoveComp->MaxWalkSpeed = NewSpeed;
 
+		GetPawnUIComponent()->OnCurrentSpeedChanged.Broadcast(GetGNRAttributeSet()->GetCurrentSpeed());
+
 		UE_LOG(LogTemp, Log, TEXT("Applied MaxWalkSpeed: %f"), NewSpeed);
 	}
 }
@@ -247,4 +249,28 @@ void AGNRPlayerCharacter::Input_AbilityInputPressed(FGameplayTag InInputTag)
 void AGNRPlayerCharacter::Input_AbilityInputReleased(FGameplayTag InInputTag)
 {
 	GNRAbilitySystemComponent->OnAbilityInputReleased(InInputTag);
+}
+
+void AGNRPlayerCharacter::HandleTurretKilled()
+{
+	ApplyTurretKillRewardEffect();
+}
+
+void AGNRPlayerCharacter::ApplyTurretKillRewardEffect()
+{
+	if (!SpeedBuffEffectClass)
+	{
+		return;
+	}
+	UGNRAbilitySystemComponent* ASC = GetGNRAbilitySystemComponent();
+	FGameplayEffectContextHandle Context = ASC->MakeEffectContext();
+	Context.AddSourceObject(this);
+
+	FGameplayEffectSpecHandle SpecHandle =
+		ASC->MakeOutgoingSpec(SpeedBuffEffectClass, 1.f, Context);
+
+	if (SpecHandle.IsValid())
+	{
+		ASC->ApplyGameplayEffectSpecToSelf(*SpecHandle.Data.Get());
+	}
 }

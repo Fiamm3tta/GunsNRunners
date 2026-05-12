@@ -10,6 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "TimerManager.h"
 #include "Projectile/GNRProjectile.h"
+#include "Characters/GNRPlayerCharacter.h"
 
 // Sets default values
 AGNRTurretBase::AGNRTurretBase()
@@ -415,6 +416,10 @@ void AGNRTurretBase::Die()
 	}
 
 	bIsDead = true;
+
+	AGNRPlayerCharacter* Player = Cast<AGNRPlayerCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
+
+	Player->HandleTurretKilled();
 
 	OnTurretDied.Broadcast(this);
 

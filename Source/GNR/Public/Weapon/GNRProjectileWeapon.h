@@ -7,6 +7,7 @@
 #include "GNRProjectileWeapon.generated.h"
 
 class AGNRProjectile;
+class AGNRSpecialProjectile;
 
 /**
  * 
@@ -25,5 +26,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Projectile")
 	TSubclassOf<AGNRProjectile> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Weapon|Projectile")
+	TSubclassOf<AGNRSpecialProjectile> SpecialProjectileClass;
 	
 };

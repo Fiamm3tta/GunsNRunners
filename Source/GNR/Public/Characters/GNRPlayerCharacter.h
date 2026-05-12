@@ -14,6 +14,7 @@ class UDataAsset_InputConfig;
 struct FInputActionValue;
 class AGNRWeaponBase;
 class UPlayerUIComponent;
+class UGameplayEffect;
 
 /**
  * 
@@ -108,4 +109,10 @@ public:
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Category = "Weapon")
 	TObjectPtr<AGNRWeaponBase> CurrentWeapon;
+
+	void HandleTurretKilled();
+	void ApplyTurretKillRewardEffect();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Buff")
+	TSubclassOf<UGameplayEffect> SpeedBuffEffectClass;
 };
