@@ -11,6 +11,7 @@
 #include "TimerManager.h"
 #include "Projectile/GNRProjectile.h"
 #include "Characters/GNRPlayerCharacter.h"
+#include "GNRGameStateBase.h"
 
 // Sets default values
 AGNRTurretBase::AGNRTurretBase()
@@ -421,9 +422,9 @@ void AGNRTurretBase::Die()
 
 	Player->HandleTurretKilled();
 
-	OnTurretDied.Broadcast(this);
+	AGNRGameStateBase* CurrentGameState = Cast<AGNRGameStateBase>(GetWorld()->GetGameState());
+	CurrentGameState->AddTurretKillCount();
 
-	// 일단 파괴 이후 연출 추가 예정
 	Destroy();
 }
 

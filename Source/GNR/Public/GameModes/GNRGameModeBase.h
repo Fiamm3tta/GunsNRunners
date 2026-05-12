@@ -14,4 +14,6 @@ class GNR_API AGNRGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	AGNRGameModeBase();
 };

@@ -12,8 +12,6 @@ class USphereComponent;
 class UCapsuleComponent;
 class AGNRProjectile;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnTurretDiedSignature, AGNRTurretBase*, DeadTurret);
-
 UCLASS()
 class GNR_API AGNRTurretBase : public APawn
 {
@@ -28,9 +26,6 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Turret|Combat")
 	bool IsDead() const { return bIsDead; }
-
-	UPROPERTY(BlueprintAssignable, Category = "Turret|Event")
-	FOnTurretDiedSignature OnTurretDied;
 
 protected:
 	// Called when the game starts or when spawned

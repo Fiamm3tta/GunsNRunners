@@ -3,3 +3,8 @@
 
 #include "GameModes/GNRGameModeBase.h"
 
+AGNRGameModeBase::AGNRGameModeBase()
+{
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = true;
+}

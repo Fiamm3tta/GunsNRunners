@@ -20,3 +20,24 @@ struct FGNRPlayerAbilitySet
 
 	bool IsValid() const;
 };
+
+USTRUCT(BlueprintType)
+struct FGNRStageRunResult
+{
+	GENERATED_BODY()
+
+    UPROPERTY(BlueprintReadWrite)
+    FName StageId;
+
+    UPROPERTY(BlueprintReadWrite)
+    bool bCleared = false;
+
+    UPROPERTY(BlueprintReadWrite)
+    bool bHardMode = false;
+
+    UPROPERTY(BlueprintReadWrite)
+    float ClearTime = 0.f;
+
+    UPROPERTY(BlueprintReadWrite)
+    int32 StarCount = 0;
+};
