@@ -40,6 +40,9 @@ public:
 	static void CountDown(const UObject* WorldContextObject, float TotalTime, float UpdateInterval,
 		float& OutRemainingTime, EGNRCountDownActionInput CountDownInput,
 		UPARAM(DisplayName = "Output") EGNRCountDownActionOutput& CountDownOutput, FLatentActionInfo LatentInfo);
+
+	UFUNCTION(BlueprintCallable, Category = "GNR|FunctionLibrary", meta = (WorldContext = "WorldContextObject"))
+	static void ToggleInputMode(const UObject* WorldContextObject, EGNRInputMode InInputMode);
 	
 };
 

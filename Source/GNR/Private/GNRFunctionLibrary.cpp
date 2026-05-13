@@ -105,3 +105,44 @@ void UGNRFunctionLibrary::CountDown(const UObject* WorldContextObject, float Tot
         }
     }
 }
+
+void UGNRFunctionLibrary::ToggleInputMode(const UObject* WorldContextObject, EGNRInputMode InInputMode)
+{
+    APlayerController* PlayerController = nullptr;
+
+    if (GEngine)
+    {
+        if (UWorld* World = GEngine->GetWorldFromContextObject(WorldContextObject, EGetWorldErrorMode::LogAndReturnNull))
+        {
+            PlayerController = World->GetFirstPlayerController();
+        }
+    }
+
+    if (!PlayerController)
+    {
+        return;
+    }
+
+    FInputModeGameOnly GameOnlyMode;
+    FInputModeUIOnly UIOnlyMode;
+
+    switch (InInputMode)
+    {
+    case EGNRInputMode::GameOnly:
+
+        PlayerController->SetInputMode(GameOnlyMode);
+        PlayerController->bShowMouseCursor = false;
+
+        break;
+
+    case EGNRInputMode::UIOnly:
+
+        PlayerController->SetInputMode(UIOnlyMode);
+        PlayerController->bShowMouseCursor = true;
+
+        break;
+
+    default:
+        break;
+    }
+}

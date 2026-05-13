@@ -19,7 +19,8 @@ void AGNRStageGameMode::InitGame(const FString& MapName, const FString& Options,
 		return;
 	}
 
-	// CurrentStageId = CurrentGameInstance->CurrentStageId;
+	CurrentStageId = CurrentGameInstance->CurrentStageId;
+	bHard = CurrentGameInstance->CurrentbHard;
 }
 
 void AGNRStageGameMode::BeginPlay()
@@ -34,12 +35,32 @@ void AGNRStageGameMode::BeginPlay()
 		return;
 	}
 
-	CurrentGameState->StartStage();
+	SetCurrentStageGameModeState(EGNRStageGameModeState::PrepareGame);
 }
 
 void AGNRStageGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (CurrentStageGameModeState == EGNRStageGameModeState::PrepareGame)
+	{
+		TimePassedSinceStart += DeltaTime;
+
+		if (TimePassedSinceStart >= PrepareTime)
+		{
+			TimePassedSinceStart = 0.f;
+
+			SetCurrentStageGameModeState(EGNRStageGameModeState::GameStart);
+			CurrentGameState->StartStage();
+		}
+	}
+}
+
+void AGNRStageGameMode::SetCurrentStageGameModeState(EGNRStageGameModeState InState)
+{
+	CurrentStageGameModeState = InState;
+
+	OnStageGameModeStateChanged.Broadcast(CurrentStageGameModeState);
 }
 
 void AGNRStageGameMode::HandleStageClear()
@@ -85,5 +106,10 @@ void AGNRStageGameMode::HandleStageClear()
 		Result.StarCount = StarCount;
 	}
 
+	ResultStarCount = Result.StarCount;
+	ResultTime = Result.ClearTime;
+
 	CurrentGameInstance->SaveStageResult(Result);
+
+	SetCurrentStageGameModeState(EGNRStageGameModeState::GameClear);
 }

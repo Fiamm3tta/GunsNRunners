@@ -95,3 +95,37 @@ void UGNRGameInstance::SaveStageResult(const FGNRStageRunResult& Result)
 
 	SaveToDisk();
 }
+
+int32 UGNRGameInstance::GetStarCount(FName StageId) const
+{
+	if (!CurrentSaveGame || StageId.IsNone())
+	{
+		return 0;
+	}
+
+	const FGNRStageClearRecord* StageData = CurrentSaveGame->StageRecords.Find(StageId);
+
+	if (!StageData)
+	{
+		return 0;
+	}
+
+	return StageData->BestStarCount;
+}
+
+bool UGNRGameInstance::GetHardStar(FName StageId) const
+{
+	if (!CurrentSaveGame || StageId.IsNone())
+	{
+		return 0;
+	}
+
+	const FGNRStageClearRecord* StageData = CurrentSaveGame->StageRecords.Find(StageId);
+
+	if (!StageData)
+	{
+		return 0;
+	}
+
+	return StageData->bHardCleard;
+}

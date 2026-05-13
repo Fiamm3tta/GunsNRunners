@@ -35,3 +35,10 @@ enum class EGNRCountDownActionOutput : uint8
 	Completed,
 	Cancelled
 };
+
+UENUM(BlueprintType)
+enum class EGNRInputMode : uint8
+{
+	GameOnly,
+	UIOnly
+};

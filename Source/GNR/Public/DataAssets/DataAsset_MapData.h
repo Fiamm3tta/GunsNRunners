@@ -13,16 +13,16 @@ struct FMapData
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    FName StageId;
+    FName StageId = NAME_None;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 SubTurretKillCount;
+    int32 SubTurretKillCount = 0;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    int32 SubEnemyKillCount;
+    int32 SubEnemyKillCount = 0;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
-    float SubTimeLimit;
+    float SubTimeLimit = 0.0f;
 };
 
 /**

@@ -24,7 +24,7 @@ struct FGNRGameLevelSet
 
 	bool IsValid() const
 	{
-		return !Level.IsNull();
+		return StageId.IsValid() && !Level.IsNull();
 	}
 };
 
@@ -47,7 +47,10 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	FName CurrentStageId;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(BlueprintReadWrite)
+	bool CurrentbHard;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<UDataAsset_MapData> MapDataAsset;
 
 public:
@@ -61,6 +64,12 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SaveStageResult(const FGNRStageRunResult& Result);
+
+	UFUNCTION(BlueprintCallable)
+	int32 GetStarCount(FName StageId) const;
+
+	UFUNCTION(BlueprintCallable)
+	bool GetHardStar(FName StageId) const;
 
 private:
 	UPROPERTY()

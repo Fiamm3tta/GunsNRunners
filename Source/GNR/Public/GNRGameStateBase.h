@@ -26,9 +26,11 @@ public:
     int32 GetTurretKillCount() { return TurretKillCount; }
     int32 GetEnemyKillCount() { return EnemyKillCount; }
 
+    UFUNCTION(BlueprintCallable)
     float GetElapsedTime() const;
     
     FGNRStageRunResult BuildStageRunResult();
+
 private:
     float StageStartTime = 0.f;
     float StageEndTime = 0.f;
