@@ -4,6 +4,7 @@
 #include "Characters/GNRCharacterBase.h"
 #include "AbilitySystem/GNRAbilitySystemComponent.h"
 #include "AbilitySystem/GNRAttributeSet.h"
+#include "MotionWarpingComponent.h"
 
 // Sets default values
 AGNRCharacterBase::AGNRCharacterBase()
@@ -16,6 +17,7 @@ AGNRCharacterBase::AGNRCharacterBase()
 
 	GNRAbilitySystemComponent = CreateDefaultSubobject<UGNRAbilitySystemComponent>(TEXT("GNRAbilitySystemComponent"));
 	GNRAttributeSet = CreateDefaultSubobject<UGNRAttributeSet>(TEXT("GNRAttributeSet"));
+	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>(TEXT("MotionWarpingComponent"));
 }
 
 UAbilitySystemComponent* AGNRCharacterBase::GetAbilitySystemComponent() const

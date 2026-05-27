@@ -23,6 +23,9 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     float SubTimeLimit = 0.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    TSoftObjectPtr<UTexture2D> PreviewImage;
 };
 
 /**

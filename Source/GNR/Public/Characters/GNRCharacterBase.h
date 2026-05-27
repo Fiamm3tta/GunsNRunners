@@ -12,6 +12,7 @@
 class UGNRAbilitySystemComponent;
 class UDataAsset_StartUpDataBase;
 class UGNRAttributeSet;
+class UMotionWarpingComponent;
 
 UCLASS()
 class GNR_API AGNRCharacterBase : public ACharacter, public IAbilitySystemInterface, public IPawnCombatInterface, public IPawnUIInterface
@@ -47,6 +48,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "CharacterData")
 	TSoftObjectPtr<UDataAsset_StartUpDataBase> CharacterStartUpData;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "MotionWarping")
+	UMotionWarpingComponent* MotionWarpingComponent;
 
 public:
 	FORCEINLINE UGNRAbilitySystemComponent* GetGNRAbilitySystemComponent() const { return GNRAbilitySystemComponent; }
