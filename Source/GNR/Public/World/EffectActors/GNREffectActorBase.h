@@ -20,6 +20,8 @@ public:
 	// Sets default values for this actor's properties
 	AGNREffectActorBase();
 
+    void BeginPlay();
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "EffectActor")
 	UBoxComponent* EffectCollisionBox;

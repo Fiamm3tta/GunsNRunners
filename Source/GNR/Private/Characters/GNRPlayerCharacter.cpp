@@ -15,6 +15,7 @@
 #include "Weapon/GNRWeaponBase.h"
 #include "AbilitySystem/GNRAttributeSet.h"
 #include "Components/UI/PlayerUIComponent.h"
+#include "GameModes/GNRStageGameMode.h"
 
 AGNRPlayerCharacter::AGNRPlayerCharacter()
 {
@@ -153,7 +154,7 @@ void AGNRPlayerCharacter::OnCurrentSpeedChanged(const FOnAttributeChangeData& Da
 
 	ApplyCurrentSpeedToMovement(ClampedSpeed);
 
-	UE_LOG(LogTemp, Log, TEXT("CurrentSpeed changed: Old=%f New=%f"), Data.OldValue, Data.NewValue);
+	// UE_LOG(LogTemp, Log, TEXT("CurrentSpeed changed: Old=%f New=%f"), Data.OldValue, Data.NewValue);
 }
 
 void AGNRPlayerCharacter::ApplyCurrentSpeedToMovement(float NewSpeed)
@@ -164,7 +165,7 @@ void AGNRPlayerCharacter::ApplyCurrentSpeedToMovement(float NewSpeed)
 
 		GetPawnUIComponent()->OnCurrentSpeedChanged.Broadcast(GetGNRAttributeSet()->GetCurrentSpeed());
 
-		UE_LOG(LogTemp, Log, TEXT("Applied MaxWalkSpeed: %f"), NewSpeed);
+		// UE_LOG(LogTemp, Log, TEXT("Applied MaxWalkSpeed: %f"), NewSpeed);
 	}
 }
 
@@ -176,7 +177,17 @@ void AGNRPlayerCharacter::PossessedBy(AController* NewController)
 	{
 		if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.LoadSynchronous())
 		{
-			LoadedData->GiveToAbilitySystemComponent(GNRAbilitySystemComponent);
+			int32 ApplyLevel = 1;
+
+			if (AGNRStageGameMode* StageGameMode = GetWorld()->GetAuthGameMode<AGNRStageGameMode>())
+			{
+				if (StageGameMode->GetbHard())
+				{
+					ApplyLevel = 2;
+				}
+			}
+
+			LoadedData->GiveToAbilitySystemComponent(GNRAbilitySystemComponent, ApplyLevel);
 		}
 	}
 }

@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "AbilitySystem/GNRAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
+#include "GameModes/GNRStageGameMode.h"
 
 // Sets default values
 AGNREffectActorBase::AGNREffectActorBase()
@@ -25,9 +26,22 @@ AGNREffectActorBase::AGNREffectActorBase()
 	EffectCollisionBox->OnComponentEndOverlap.AddUniqueDynamic(this, &ThisClass::OnEffectEndOverlap);
 }
 
+void AGNREffectActorBase::BeginPlay()
+{
+    Super::BeginPlay();
+
+    if (AGNRStageGameMode* StageGameMode = GetWorld()->GetAuthGameMode<AGNRStageGameMode>())
+    {
+        if (StageGameMode->GetbHard())
+        {
+            EffectLevel = 2.f;
+        }
+    }
+}
+
 void AGNREffectActorBase::OnEffectBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    UE_LOG(LogTemp, Display, TEXT("OverlapBegin"));
+    // UE_LOG(LogTemp, Display, TEXT("OverlapBegin"));
     
     HandleEffectBeginOverlap(OtherActor);
 }

@@ -9,6 +9,7 @@
 #include "Components/UI/EnemyUIComponent.h"
 #include "AbilitySystem/GNRAbilitySystemComponent.h"
 #include "AbilitySystem/GNRAttributeSet.h"
+#include "GameModes/GNRStageGameMode.h"
 
 AGNREnemyCharacter::AGNREnemyCharacter()
 {
@@ -98,14 +99,24 @@ void AGNREnemyCharacter::InitEnemyStartUpData()
 		return;
 	}
 
+	int32 ApplyLevel = 1;
+
+	if (AGNRStageGameMode* StageGameMode = GetWorld()->GetAuthGameMode<AGNRStageGameMode>())
+	{
+		if (StageGameMode->GetbHard())
+		{
+			ApplyLevel = 2;
+		}
+	}
+
 	UAssetManager::GetStreamableManager().RequestAsyncLoad(
 		CharacterStartUpData.ToSoftObjectPath(),
 		FStreamableDelegate::CreateLambda(
-			[this]()
+			[this, ApplyLevel]()
 			{
 				if (UDataAsset_StartUpDataBase* LoadedData = CharacterStartUpData.Get())
 				{
-					LoadedData->GiveToAbilitySystemComponent(GNRAbilitySystemComponent);
+					LoadedData->GiveToAbilitySystemComponent(GNRAbilitySystemComponent, ApplyLevel);
 
 					// Debug::Print(TEXT("Enemy Start Up Data Loaded"), FColor::Green);
 				}
