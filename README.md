@@ -3,7 +3,29 @@
 ## 프로젝트 소개
 빠르고 공격적인 전투를 강조한 1인칭 슈팅+러너 게임 **Guns N' Runners**를 개발합니다.
 끊임없이 앞으로 나아가며 회피와 공격을 통해 적을 제거하고 목표 지점에 최대한 빨리 도달해야 합니다.
-  
+ 
+## Gameplay
+
+[Gameplay Video](https://www.youtube.com/watch?v=eFvE4SzRV2g)
+
+## Playable Build
+
+[Download Latest Release](https://github.com/Fiamm3tta/GunsNRunners/releases/tag/v1.0-portfolio)
+
+- Platform: Windows
+- 압축 해제 후 `GNR.exe` 실행
+
+## Controls
+
+| Key | Action |
+| --- | --- |
+| W / A / S / D | Move |
+| Mouse | Look |
+| Left Click | Shoot |
+| right Click | Skill |
+| Space | Jump |
+| Shift | Dash |
+| ESC | Pause |
 
 ## 구현 기능
 - **플레이어**

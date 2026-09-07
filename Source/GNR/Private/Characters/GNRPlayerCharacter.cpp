@@ -163,7 +163,7 @@ void AGNRPlayerCharacter::ApplyCurrentSpeedToMovement(float NewSpeed)
 	{
 		MoveComp->MaxWalkSpeed = NewSpeed;
 
-		GetPawnUIComponent()->OnCurrentSpeedChanged.Broadcast(GetGNRAttributeSet()->GetCurrentSpeed());
+	    GetPawnUIComponent()->OnCurrentSpeedChanged.Broadcast(GetGNRAttributeSet()->GetCurrentSpeed());
 
 		// UE_LOG(LogTemp, Log, TEXT("Applied MaxWalkSpeed: %f"), NewSpeed);
 	}
