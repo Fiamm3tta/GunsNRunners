@@ -22,7 +22,7 @@
 | W / A / S / D | Move |
 | Mouse | Look |
 | Left Click | Shoot |
-| right Click | Skill |
+| Right Click | Skill |
 | Space | Jump |
 | Shift | Dash |
 | ESC | Pause |
